@@ -1,0 +1,11 @@
+@CoreAPI_HostAddress = http://localhost:49153
+
+POST {{CoreAPI_HostAddress}}/api/Authentication/LoginUser
+Accept: application/json
+Content-Type: application/json
+
+{
+    "username": "atakan",
+    "password": "123"
+}
+###

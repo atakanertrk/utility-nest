@@ -1,0 +1,14 @@
+npm --version
+npm install -g npm stable
+
+node -v
+npm install -g node
+
+npm install -g @angular/cli
+
+ng new task-notify-ui
+ng serve --open
+
+ng generate component component-name-here
+
+https://www.npmjs.com/package/@microsoft/signalr

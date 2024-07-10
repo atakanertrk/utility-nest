@@ -1,0 +1,28 @@
+<main class="main">
+  <div class="login-container">
+    <form (ngSubmit)="onSubmitLogin()" #loginLoginForm="ngForm">
+      <div>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" [(ngModel)]="username" required>
+      </div>
+      <div>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" [(ngModel)]="password" required>
+      </div>
+      <button type="submit" [disabled]="!loginLoginForm.form.valid">Login</button>
+    </form>
+  </div>
+  <br/>
+  <hr/>
+  <div class="login-container">
+    <form (ngSubmit)="onSubmitForm()" #taskForm="ngForm">
+      <div>
+        <label for="taskName">TaskName:</label>
+        <input type="text" id="taskName" name="taskName" [(ngModel)]="taskName" required>
+      </div>
+      <button type="submit" [disabled]="!taskForm.form.valid">Submit Task</button>
+    </form>
+  </div>
+</main>
+
+<router-outlet />

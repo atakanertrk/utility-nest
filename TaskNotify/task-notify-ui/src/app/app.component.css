@@ -1,0 +1,47 @@
+.main {
+    width: 100%;
+    min-height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    box-sizing: inherit;
+    position: relative;
+  }
+
+.login-container {
+    max-width: 300px;
+    margin: auto;
+    padding: 1em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .login-container div {
+    margin-bottom: 1em;
+  }
+  
+  .login-container label {
+    display: block;
+    margin-bottom: 0.5em;
+  }
+  
+  .login-container input {
+    width: 100%;
+    padding: 0.5em;
+    box-sizing: border-box;
+  }
+  
+  .login-container button {
+    width: 100%;
+    padding: 0.5em;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .login-container button[disabled] {
+    background-color: #ccc;
+  }
