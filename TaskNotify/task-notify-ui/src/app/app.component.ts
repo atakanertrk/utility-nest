@@ -5,30 +5,30 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClient, HttpHeaders } from '@angular/common/http';
 import { HubConnection, HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
+import { LoginFormComponent } from "./login-form/login-form.component";
+import { CreateTaskFormComponent } from "./create-task-form/create-task-form.component";
+import { NotificationService } from './services/notification.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, CommonModule, FormsModule, HttpClientModule],
+  imports: [RouterOutlet, CommonModule, FormsModule, HttpClientModule, LoginFormComponent, CreateTaskFormComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
   title = 'task-notify-ui';
-  username: string = '';
-  password: string = '';
-  taskName: string = '';
   hubConnection: HubConnection = new HubConnectionBuilder()
-  .withUrl('http://localhost:60185/taskNotifyHub')
+  .withUrl('http://localhost:4997/taskNotifyHub')
   .build();
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient,private notificationService: NotificationService) {
    
   }
 
   ngOnInit() {
   this.hubConnection.on('ReceiveTaskNotification', (userName,taskName) => {
-    console.log(userName + ' ' + taskName);
+    this.notificationService.notify(`${userName} ${taskName}`);
   });
 
   this.hubConnection.start()
@@ -36,48 +36,8 @@ export class AppComponent {
     .catch((err) => console.log('error while establishing signalr connection: ' + err));
   }
 
-  onSubmitLogin() {
-    console.log('Username:', this.username);
-    console.log('Password:', this.password);
-
-    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-
-    const payload = {
-      username: this.username,
-      password: this.password
-    };
-
-    this.httpClient.post<any>('http://localhost:4998/api/security/LoginUser', payload, { headers }).subscribe(
-      response => {
-        console.log('LoginResponse:', response);
-        localStorage.setItem('token', response.token);
-      },
-      error => {
-        console.error('LoginError:', error);
-      }
-    );
-  }
-
-  onSubmitForm() {
-    console.log('Username:', this.username);
-    console.log('Password:', this.password);
-
-    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-
-    const payload = {
-      userName: this.username,
-      taskName: this.taskName
-    };
-    const token = localStorage.getItem('token');
-    headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` });
-    this.httpClient.post<any>('http://localhost:4998/api/tasks/createnew', payload, { headers }).subscribe(
-      response => {
-        console.log(response);
-      },
-      error => {
-        console.error('TaskError:', error);
-      }
-    );
+  isLoggedIn(): boolean {
+    return !!localStorage.getItem('token');
   }
 
 }

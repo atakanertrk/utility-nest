@@ -1,35 +1,30 @@
-docker run --name task-notify-app-postgres-database -p 5432:5432 -e POSTGRES_PASSWORD=asd123PWD -d postgres
-[optional] https://dbeaver.io/download/ (management studio for postgres)
-
 https://docs.confluent.io/platform/current/platform-quickstart.html
+https://github.com/confluentinc/cp-all-in-one/blob/7.6.1-post/cp-all-in-one-kraft/docker-compose.yml
 
-download https://github.com/confluentinc/cp-all-in-one/blob/7.6.1-post/cp-all-in-one-kraft/docker-compose.yml
-cd to file directory. (rename to kafka-docker-compose.yml)
 
-cd C:\Users\PC\Desktop\utility-nest\TaskNotify\TaskNotifyBackend\SpinUpTemplateData
-docker-compose -f kafka-docker-compose.yml up
+cd C:\Users\PC\Desktop\utility-nest\TaskNotify
+docker-compose -f kafka-docker-compose.yml -p task-notify-kafka-container up
 
-docker run --name task-notify-app-mssql-database --network spinuptemplatedata_default -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=asd123PWD" -p 1433:1433 -d mcr.microsoft.com/mssql/server:2022-latest
+docker run --name task-notify-mssql-container --network taskNotifyNetwork -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=asd123PWD" -p 1433:1433 -d mcr.microsoft.com/mssql/server:2022-latest
 
-<DockerfileRunArguments>--network spinuptemplatedata_default</DockerfileRunArguments>
+-> SpinUpTemplateData.exe (creates tables and predefined users)
 
-run SpinUpTemplateData.exe
+cd C:\Users\PC\Desktop\utility-nest\TaskNotify
+docker-compose -f backend-api-docker-compose.yml -p task-notify-api-list up
 
-docker network ls
-docker network inspect bridge
-
+/******old way of backend-api-docker-compose.yml******/
 cd C:\Users\PC\Desktop\utility-nest\TaskNotify\TaskNotifyBackend\TaskAPI\TaskAPI
 docker build -t taskapi:v1 .
-docker run -it --rm -p 4998:4998 --network spinuptemplatedata_default --name taskapi taskapi:v1 --network spinuptemplatedata_default
+docker run -it --rm -p 4998:4998 --network taskNotifyNetwork --name taskapi taskapi:v1 --network spinuptemplatedata_default
 
 cd C:\Users\PC\Desktop\utility-nest\TaskNotify\TaskNotifyBackend\CoreAPI\CoreAPI
 docker build -t coreapi:v1 .
-docker run -it --rm -p 4999:4999 --network spinuptemplatedata_default --name coreapi coreapi:v1
+docker run -it --rm -p 4999:4999 --network taskNotifyNetwork --name coreapi coreapi:v1
 
 cd C:\Users\PC\Desktop\utility-nest\TaskNotify\TaskNotifyBackend\SignalRNotifyAPI\SignalRNotifyAPI
 docker build -t signalrnotifyapi:v1 .
-docker run -it --rm -p 4997:4997 --network spinuptemplatedata_default --name signalrnotifyapi signalrnotifyapi:v1
+docker run -it --rm -p 4997:4997 --network taskNotifyNetwork --name signalrnotifyapi signalrnotifyapi:v1
+/***************************************************************************************************************************
 
-
-created 'users' table with users as PatricStar (pw: patricstar123) and SpongeBob (pw: spongebob123)
-created 'tasks' table with procedures insert_user_task, get_tasks_by_user_name
+docker run --name task-notify-app-postgres-database -p 5432:5432 -e POSTGRES_PASSWORD=asd123PWD -d postgres
+[optional] https://dbeaver.io/download/ (management studio for postgres)

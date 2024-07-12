@@ -1,0 +1,52 @@
+.task-container {
+    width: 300px;
+    margin: auto;
+    padding: 1em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .task-container div {
+    margin-bottom: 1em;
+  }
+  
+  .task-container label {
+    display: block;
+    margin-bottom: 0.5em;
+  }
+  
+  .task-container input {
+    width: 100%;
+    padding: 0.5em;
+    box-sizing: border-box;
+  }
+  
+  .task-container button {
+    width: 100%;
+    padding: 0.5em;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .task-container button[disabled] {
+    background-color: #ccc;
+  }
+
+
+  .logs table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .logs th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .logs th {
+    background-color: #f2f2f2;
+  }

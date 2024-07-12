@@ -1,0 +1,24 @@
+<div class="task-container">
+  <form (ngSubmit)="onSubmitTaskForm()" #taskForm="ngForm">
+    <div>
+      <label for="taskName">TaskName:</label>
+      <input type="text" id="taskName" name="taskName" [(ngModel)]="taskName" required>
+    </div>
+    <button type="submit" [disabled]="!taskForm.form.valid">Submit Task</button>
+  </form>
+</div>
+
+<div class="logs">
+  <table *ngIf="messages.length > 0">
+    <thead>
+      <tr>
+        <th>Message</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let message of messages">
+        <td>{{ message }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
