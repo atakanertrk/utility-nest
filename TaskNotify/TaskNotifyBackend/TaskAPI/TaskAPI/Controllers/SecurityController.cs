@@ -74,7 +74,7 @@ namespace TaskAPI.Controllers
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.Add(TimeSpan.FromHours(24)),
+                Expires = DateTime.UtcNow.Add(TimeSpan.FromMinutes(Convert.ToDouble(_configuration["JwtSettings:ExpirationInMinutes"]))),
                 Issuer = _configuration["JwtSettings:Issuer"],
                 Audience = _configuration["JwtSettings:Audience"],
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

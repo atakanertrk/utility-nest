@@ -41,7 +41,7 @@ namespace CoreAPI
 
                             if (taskModel is not null)
                             {
-                                ProcessTask(taskModel,20); // process task with 20 seconds delay in background
+                                ProcessTask(taskModel,taskModel.TaskProcessTimeInSeconds); // process task with specified seconds delay in background
                             }
                         }
                         catch (ConsumeException e)

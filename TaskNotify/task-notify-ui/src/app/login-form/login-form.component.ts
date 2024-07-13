@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -14,14 +14,13 @@ export class LoginFormComponent {
   username: string = '';
   password: string = '';
 
+  @Output() usernameSet = new EventEmitter<string>();
+
   constructor(private httpClient: HttpClient) {
    
   }
 
   onSubmitLogin() {
-    console.log('Username:', this.username);
-    console.log('Password:', this.password);
-
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
     const payload = {
@@ -31,8 +30,8 @@ export class LoginFormComponent {
 
     this.httpClient.post<any>('http://localhost:4998/api/security/LoginUser', payload, { headers }).subscribe(
       response => {
-        console.log('LoginResponse:', response);
         localStorage.setItem('token', response.token);
+        this.usernameSet.emit(this.username);
       },
       error => {
         console.error('LoginError:', error);

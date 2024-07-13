@@ -14,7 +14,7 @@ using System.Text;
 
 namespace TaskAPI.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class TasksController : ControllerBase

@@ -1,0 +1,4 @@
+{
+  "TaskNotifyHubAddress": "http://localhost:4997/taskNotifyHub",
+  "TaskAPIBaseAddress": "http://localhost:4998/api/"
+}

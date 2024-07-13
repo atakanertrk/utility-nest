@@ -1,24 +1,56 @@
-<div class="task-container">
-  <form (ngSubmit)="onSubmitTaskForm()" #taskForm="ngForm">
-    <div>
-      <label for="taskName">TaskName:</label>
-      <input type="text" id="taskName" name="taskName" [(ngModel)]="taskName" required>
+
+
+<div class="card" style="width: 60%; margin-left: 20%;">
+  <div class="card-body">
+    <div class="card">
+      <div class="card-body">
+        <form (ngSubmit)="onSubmitTaskForm()" #loginLoginForm="ngForm">
+          <div class="form-group">
+            <label>TaskName</label>
+            <input type="text" class="form-control" placeholder="TaskName" name="taskName" [(ngModel)]="taskName">
+          </div>
+          <div class="form-group" style="margin-top: 20px;">
+            <label>EstimatedTimeInSeconds</label>
+            <input type="number" class="form-control" [defaultValue]="5" name="taskProcessTimeInSeconds" [(ngModel)]="taskProcessTimeInSeconds">
+          </div>
+          <button type="submit" class="btn btn-dark" style="margin-top: 20px;">Create</button>
+        </form>
+      </div>
     </div>
-    <button type="submit" [disabled]="!taskForm.form.valid">Submit Task</button>
-  </form>
+  </div>
 </div>
 
-<div class="logs">
-  <table *ngIf="messages.length > 0">
-    <thead>
-      <tr>
-        <th>Message</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let message of messages">
-        <td>{{ message }}</td>
-      </tr>
-    </tbody>
-  </table>
+
+<div>
+  <button type="button" class="btn btn-link" (click)="clearHistory()">Clear History</button>
+</div>
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm">
+      <div *ngFor="let task of createdTasks" style="width: 80%; margin-left: 10%;">
+        <p style="color: white;">CREATED TASK</p>
+        <div class="alert alert-info" role="alert">
+          {{ task }}
+        </div>
+      </div>
+    </div>
+    <div class="col-sm">
+      <div *ngFor="let task of completedTasks" style="width: 80%; margin-left: 10%;">
+        <p style="color: white;">COMPLETED TASK</p>
+        <div class="alert alert-success" role="alert">
+          {{ task }}
+        </div>
+      </div>
+    </div>
+    <div class="col-sm">
+      <div *ngFor="let task of failedTasks" style="width: 80%; margin-left: 10%;">
+        <p style="color: white;">FAILED TASK</p>
+        <div class="alert alert-danger" role="alert">
+          {{ task }}
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
