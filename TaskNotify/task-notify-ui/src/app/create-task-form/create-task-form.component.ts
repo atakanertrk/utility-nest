@@ -1,8 +1,9 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpHeaders } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { NotificationService } from '../services/notification.service';
+import { HttpServiceService } from '../services/http-service.service';
 
 @Component({
   selector: 'app-create-task-form',
@@ -18,7 +19,7 @@ export class CreateTaskFormComponent {
   failedTasks: string[] = [];
   taskProcessTimeInSeconds: number = 5;
 
-  constructor(private httpClient: HttpClient, private notificationService: NotificationService) {
+  constructor(private notificationService: NotificationService, private httpServiceService: HttpServiceService) {
 
   }
 
@@ -40,17 +41,13 @@ export class CreateTaskFormComponent {
       taskProcessTimeInSeconds: this.taskProcessTimeInSeconds
     };
 
-    this.httpClient.post<any>('http://localhost:4998/api/tasks/createnew', payload, { headers }).subscribe(
+    this.httpServiceService.post('http://localhost:4998/api/tasks/createnew', payload, headers).subscribe(
       response => {
         console.log(response);
         this.createdTasks.push(this.taskName);
       },
       error => {
         console.error('TaskError:', error);
-        if(error.status === 401){
-          localStorage.removeItem('token');
-          localStorage.removeItem('username');
-        }
         this.failedTasks.push(this.taskName);
       }
     );

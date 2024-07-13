@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, JsonpInterceptor } from '@angular/common/http';
-import { BehaviorSubject, map, Observable, tap } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Observable, tap } from 'rxjs';
 import { WebConfig } from '../common/WebConfig';
 
 @Injectable({

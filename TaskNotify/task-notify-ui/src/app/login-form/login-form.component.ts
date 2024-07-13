@@ -1,6 +1,7 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpHeaders } from '@angular/common/http';
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { HttpServiceService } from '../services/http-service.service';
 
 @Component({
   selector: 'app-login-form',
@@ -16,7 +17,7 @@ export class LoginFormComponent {
 
   @Output() usernameSet = new EventEmitter<string>();
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpServiceService:HttpServiceService) {
    
   }
 
@@ -28,7 +29,7 @@ export class LoginFormComponent {
       password: this.password
     };
 
-    this.httpClient.post<any>('http://localhost:4998/api/security/LoginUser', payload, { headers }).subscribe(
+    this.httpServiceService.post('http://localhost:4998/api/security/LoginUser', payload, headers).subscribe(
       response => {
         localStorage.setItem('token', response.token);
         this.usernameSet.emit(this.username);

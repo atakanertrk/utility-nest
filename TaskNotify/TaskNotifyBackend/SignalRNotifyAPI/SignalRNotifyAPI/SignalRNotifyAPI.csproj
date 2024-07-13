@@ -15,8 +15,4 @@
 	  <PackageReference Include="Confluent.SchemaRegistry.Serdes.Avro" Version="2.4.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
 </Project>

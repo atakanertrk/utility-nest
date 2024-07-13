@@ -3,13 +3,11 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
 import { HubConnection, HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 import { LoginFormComponent } from "./login-form/login-form.component";
 import { CreateTaskFormComponent } from "./create-task-form/create-task-form.component";
 import { NotificationService } from './services/notification.service';
 import { ConfigService } from './services/config.service';
-import { WebConfig } from './common/WebConfig';
 
 @Component({
   selector: 'app-root',
@@ -33,7 +31,7 @@ export class AppComponent {
     localStorage.setItem('username', value);
   }
 
-  constructor(private http: HttpClient, private notificationService: NotificationService, private configService: ConfigService) {
+  constructor(private notificationService: NotificationService, private configService: ConfigService) {
 
   }
 

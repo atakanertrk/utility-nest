@@ -27,38 +27,44 @@ namespace SignalRNotifyAPI
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            return Task.Run(async () =>
+            return Task.Run(() =>
             {
-                using (var consumer = new ConsumerBuilder<Ignore, string>(_consumerConfig).Build())
+                execute(stoppingToken);
+            });
+        }
+
+        private void execute(CancellationToken stoppingToken)
+        {
+            using (var consumer = new ConsumerBuilder<Ignore, string>(_consumerConfig).Build())
+            {
+                consumer.Subscribe("tasks-processed");
+
+                while (!stoppingToken.IsCancellationRequested)
                 {
-                    consumer.Subscribe("tasks-processed");
-
-                    while (!stoppingToken.IsCancellationRequested)
+                    try
                     {
-                        try
-                        {
-                            var consumeResult = consumer.Consume(stoppingToken);
-                            var taskModel = JsonConvert.DeserializeObject<TaskModel>(consumeResult.Message.Value);
-                            _logger.LogInformation($"Received Task: {taskModel.TaskName} by {taskModel.UserName}");
+                        var consumeResult = consumer.Consume(stoppingToken);
+                        var taskModel = JsonConvert.DeserializeObject<TaskModel>(consumeResult.Message.Value);
+                        _logger.LogInformation($"Received Task: {taskModel.TaskName} by {taskModel.UserName}");
 
-                            if (taskModel is not null)
-                            {
-                                NotifyUI(taskModel);
-                            }
-                        }
-                        catch (ConsumeException e)
+                        if (taskModel is not null)
                         {
-                            _logger.LogError($"Consume error: {e.Error.Reason}");
-                        }
-                        catch (OperationCanceledException)
-                        {
-                            break;
+                            NotifyUI(taskModel);
                         }
                     }
-
-                    consumer.Close();
+                    catch (OperationCanceledException ex)
+                    {
+                        _logger.LogError($"Tasks Processed Consume Exception: {ex}");
+                        break;
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError($"Tasks Processed Consume Exception: {ex}");
+                    }
                 }
-            });
+
+                consumer.Close();
+            }
         }
 
         private async Task NotifyUI(TaskModel task)

@@ -25,38 +25,44 @@ namespace CoreAPI
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            return Task.Run(async () =>
+            return Task.Run(() =>
             {
-                using (var consumer = new ConsumerBuilder<Ignore, string>(_consumerConfig).Build())
+                execute(stoppingToken);
+            });
+        }
+
+        private void execute(CancellationToken stoppingToken)
+        {
+            using (var consumer = new ConsumerBuilder<Ignore, string>(_consumerConfig).Build())
+            {
+                consumer.Subscribe("tasks-to-process");
+
+                while (!stoppingToken.IsCancellationRequested)
                 {
-                    consumer.Subscribe("tasks-to-process");
-
-                    while (!stoppingToken.IsCancellationRequested)
+                    try
                     {
-                        try
-                        {
-                            var consumeResult = consumer.Consume(stoppingToken);
-                            var taskModel = JsonConvert.DeserializeObject<TaskModel>(consumeResult.Message.Value);
-                            _logger.LogInformation($"Received Task: {taskModel.TaskName} by {taskModel.UserName}");
+                        var consumeResult = consumer.Consume(stoppingToken);
+                        var taskModel = JsonConvert.DeserializeObject<TaskModel>(consumeResult.Message.Value);
+                        _logger.LogInformation($"Received Task To Process: {taskModel.TaskName} by {taskModel.UserName}");
 
-                            if (taskModel is not null)
-                            {
-                                ProcessTask(taskModel,taskModel.TaskProcessTimeInSeconds); // process task with specified seconds delay in background
-                            }
-                        }
-                        catch (ConsumeException e)
+                        if (taskModel is not null)
                         {
-                            _logger.LogError($"Consume error: {e.Error.Reason}");
-                        }
-                        catch (OperationCanceledException)
-                        {
-                            break;
+                            ProcessTask(taskModel, taskModel.TaskProcessTimeInSeconds); // process task with specified seconds delay in background
                         }
                     }
-
-                    consumer.Close();
+                    catch (ConsumeException ex)
+                    {
+                        _logger.LogError($"Consume Task To Process Exception: {ex}");
+                    }
+                    catch (OperationCanceledException ex)
+                    {
+                        _logger.LogError($"Consume Task To Process Exception: {ex}");
+                        break;
+                    }
                 }
-            });
+
+                consumer.Close();
+            }
         }
 
         /// <summary>
@@ -70,7 +76,10 @@ namespace CoreAPI
             bool processResultDb = await ProcessTaskIntoDB(taskModel);
             if (processResultDb)
             {
-                await ProduceTaskCompleted(taskModel);
+                if (await ProduceTaskCompleted(taskModel))
+                {
+                    _logger.LogInformation($"Task Process Completed: {taskModel.TaskName} by {taskModel.UserName}");
+                }
             }
         }
 
@@ -88,13 +97,13 @@ namespace CoreAPI
                     parameters.Add("p_task_name", task.TaskName, DbType.String, ParameterDirection.Input);
                     parameters.Add("p_user_name", task.UserName, DbType.String, ParameterDirection.Input);
                     parameters.Add("p_record_date", DateTime.Now, DbType.DateTime, ParameterDirection.Input);
-                    var er = await connection.ExecuteAsync("insert_user_task", parameters,commandType: System.Data.CommandType.StoredProcedure);
+                    await connection.ExecuteAsync("insert_user_task", parameters,commandType: CommandType.StoredProcedure);
 
                     return true;
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex);
+                    _logger.LogError($"ProcessTaskIntoDB Failed {task.UserName}:{task.TaskName} {ex}");
                 }
             }
 
@@ -109,12 +118,12 @@ namespace CoreAPI
             {
                 try
                 {
-                    var dr = await p.ProduceAsync("tasks-processed", new Message<Null, string> { Value = JsonConvert.SerializeObject(task) });
-                    return dr.Status == PersistenceStatus.Persisted;
+                    var deliveryResult = await p.ProduceAsync("tasks-processed", new Message<Null, string> { Value = JsonConvert.SerializeObject(task) });
+                    return deliveryResult.Status == PersistenceStatus.Persisted;
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Delivery failed: {ex}");
+                    _logger.LogError($"Task Processed Delivery failed: {task.UserName}:{task.TaskName} {ex}");
                 }
             }
             return false;

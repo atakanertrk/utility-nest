@@ -26,28 +26,28 @@
 </div>
 
 
-<div class="container">
+<div class="container" style="text-align: center;">
   <div class="row">
     <div class="col-sm">
+      <p style="color: white;">CREATED TASKS</p>
       <div *ngFor="let task of createdTasks" style="width: 80%; margin-left: 10%;">
-        <p style="color: white;">CREATED TASK</p>
         <div class="alert alert-info" role="alert">
           {{ task }}
         </div>
       </div>
     </div>
     <div class="col-sm">
-      <div *ngFor="let task of completedTasks" style="width: 80%; margin-left: 10%;">
-        <p style="color: white;">COMPLETED TASK</p>
-        <div class="alert alert-success" role="alert">
+      <p style="color: white;">FAILED TASKS</p>
+      <div *ngFor="let task of failedTasks" style="width: 80%; margin-left: 10%;">
+        <div class="alert alert-danger" role="alert">
           {{ task }}
         </div>
       </div>
     </div>
     <div class="col-sm">
-      <div *ngFor="let task of failedTasks" style="width: 80%; margin-left: 10%;">
-        <p style="color: white;">FAILED TASK</p>
-        <div class="alert alert-danger" role="alert">
+      <p style="color: white;">COMPLETED TASKS</p>
+      <div *ngFor="let task of completedTasks" style="width: 80%; margin-left: 10%;">
+        <div class="alert alert-success" role="alert">
           {{ task }}
         </div>
       </div>

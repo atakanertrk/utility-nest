@@ -28,28 +28,18 @@ namespace TaskAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> LoginUser([FromBody] LoginUserModel loginUserModel)
         {
-            //var hashedPassword = BCrypt.Net.BCrypt.HashPassword(loginUserModel.Password);
-
             var connectionString = _configuration["MSSQLDb:ConnectionString"];
 
             LoginUserModel? userFromDb;
             using (var connection = new SqlConnection(connectionString))
             {
-                try
-                {
-                    connection.Open();
-                    //userFromDb = await connection.QuerySingleOrDefaultAsync<LoginUserModel>($"select UserName,Password from users where UserName = '{loginUserModel.UserName}';");
-                    DynamicParameters parameters = new DynamicParameters();
-                    parameters.Add("p_username", loginUserModel.UserName, DbType.String, ParameterDirection.Input);
-                    userFromDb = await connection.QuerySingleOrDefaultAsync<LoginUserModel>("get_user_by_name", parameters, commandType: System.Data.CommandType.StoredProcedure);
-                }
-                catch (Exception ex)
-                {
-
-                    throw;
-                }
+                connection.Open();
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("p_username", loginUserModel.UserName, DbType.String, ParameterDirection.Input);
+                userFromDb = await connection.QuerySingleOrDefaultAsync<LoginUserModel>("get_user_by_name", parameters, commandType: System.Data.CommandType.StoredProcedure);
             }
 
+            // should probably not expose if user is found or not, just return invalid username or pw for production...
             if (userFromDb is null)
             {
                 return Unauthorized($"user {loginUserModel.UserName} is not found");
