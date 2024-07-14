@@ -6,7 +6,7 @@ So I will be sharing steps for both.
 [2) Remote Server (Docker on Linux Machine via SSH terminal)](#on-server)
 
 ## <a id="on-local"></a>1) Local (Docker Desktop Windows WSL)
-* First we will spinup Kafka containers [Quick Start for Confluent Platform](https://docs.confluent.io/platform/current/platform-quickstart.html)  
+* First we will spin-up Kafka containers [Quick Start for Confluent Platform](https://docs.confluent.io/platform/current/platform-quickstart.html)  
 Download compose file https://github.com/confluentinc/cp-all-in-one/blob/7.6.1-post/cp-all-in-one-kraft/docker-compose.yml  
 We have updated kafka compose file to use our custom taskNotifyNetwork, so you can get the modified version at [kafka-docker-compose.yml](https://github.com/atakanertrk/utility-nest/blob/main/TaskNotify/kafka-docker-compose.yml)  
 
@@ -31,7 +31,7 @@ That will print the results.
 `created 'tasks' table with procedures insert_user_task, get_tasks_by_user_name` 
 ![image](https://github.com/user-attachments/assets/a5ed0106-67b5-402f-8bb6-ccd1990537a8)
 
-* Spinup Backend APIs  
+* Spin-up Backend APIs  
   we will be using [backend-api-docker-compose.yml](https://github.com/atakanertrk/utility-nest/blob/main/TaskNotify/backend-api-docker-compose.yml)  
 
       docker-compose -f backend-api-docker-compose.yml -p task-notify-api-list up
@@ -40,7 +40,7 @@ That will print the results.
 
 * Now we can start our Angular UI  
 For local environment, we will start with `ng serve --open`  
-But we create image for server with following steps. (we use that image when we spinup in remote Linux machine...)  
+But we create image for server with following steps. (we use that image when we spin-up in remote Linux machine...)  
   
       docker build . -t task-notify-ui
       docker run -it --rm -p 4200:4200 --network taskNotifyNetwork --name task-notify-ui task-notify-ui
