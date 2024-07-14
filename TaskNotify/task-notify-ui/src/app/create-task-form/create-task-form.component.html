@@ -32,7 +32,8 @@
       <p style="color: white;">CREATED TASKS</p>
       <div *ngFor="let task of createdTasks" style="width: 80%; margin-left: 10%;">
         <div class="alert alert-info" role="alert">
-          {{ task }}
+          {{ task.message }}
+          <p class="mb-0" style="text-align: right; font-size: smaller;">{{task.datetime}}</p>
         </div>
       </div>
     </div>
@@ -40,7 +41,8 @@
       <p style="color: white;">FAILED TASKS</p>
       <div *ngFor="let task of failedTasks" style="width: 80%; margin-left: 10%;">
         <div class="alert alert-danger" role="alert">
-          {{ task }}
+          {{ task.message }}
+          <p class="mb-0" style="text-align: right; font-size: smaller;">{{task.datetime}}</p>
         </div>
       </div>
     </div>
@@ -48,7 +50,8 @@
       <p style="color: white;">COMPLETED TASKS</p>
       <div *ngFor="let task of completedTasks" style="width: 80%; margin-left: 10%;">
         <div class="alert alert-success" role="alert">
-          {{ task }}
+          {{ task.message }}
+          <p class="mb-0" style="text-align: right; font-size: smaller;">{{task.datetime}}</p>
         </div>
       </div>
     </div>

@@ -29,7 +29,7 @@ export class LoginFormComponent {
       password: this.password
     };
 
-    this.httpServiceService.post('http://localhost:4998/api/security/LoginUser', payload, headers).subscribe(
+    this.httpServiceService.post('security/LoginUser', payload, headers).subscribe(
       response => {
         localStorage.setItem('token', response.token);
         this.usernameSet.emit(this.username);

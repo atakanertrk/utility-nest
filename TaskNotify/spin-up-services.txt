@@ -1,12 +1,10 @@
-tasks-to-process
-
-
-https://docs.confluent.io/platform/current/platform-quickstart.html
-https://github.com/confluentinc/cp-all-in-one/blob/7.6.1-post/cp-all-in-one-kraft/docker-compose.yml
-
-
+ https://docs.confluent.io/platform/current/platform-quickstart.html
+ https://github.com/confluentinc/cp-all-in-one/blob/7.6.1-post/cp-all-in-one-kraft/docker-compose.yml
 cd C:\Users\PC\Desktop\utility-nest\TaskNotify
 docker-compose -f kafka-docker-compose.yml -p task-notify-kafka-container up
+
+create topic tasks-to-process
+create topic tasks-processed
 
 docker run --name task-notify-mssql-container --network taskNotifyNetwork -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=asd123PWD" -p 1433:1433 -d mcr.microsoft.com/mssql/server:2022-latest
 
@@ -15,19 +13,7 @@ docker run --name task-notify-mssql-container --network taskNotifyNetwork -e "AC
 cd C:\Users\PC\Desktop\utility-nest\TaskNotify
 docker-compose -f backend-api-docker-compose.yml -p task-notify-api-list up
 
-/******old way of backend-api-docker-compose.yml******/
-cd C:\Users\PC\Desktop\utility-nest\TaskNotify\TaskNotifyBackend\TaskAPI\TaskAPI
-docker build -t taskapi:v1 .
-docker run -it --rm -p 4998:4998 --network taskNotifyNetwork --name taskapi taskapi:v1 --network spinuptemplatedata_default
+docker build . -t task-notify-ui
+docker run -it --rm -p 4200:4200 --network taskNotifyNetwork --name task-notify-ui 3480/task-notify-ui:v1
 
-cd C:\Users\PC\Desktop\utility-nest\TaskNotify\TaskNotifyBackend\CoreAPI\CoreAPI
-docker build -t coreapi:v1 .
-docker run -it --rm -p 4999:4999 --network taskNotifyNetwork --name coreapi coreapi:v1
 
-cd C:\Users\PC\Desktop\utility-nest\TaskNotify\TaskNotifyBackend\SignalRNotifyAPI\SignalRNotifyAPI
-docker build -t signalrnotifyapi:v1 .
-docker run -it --rm -p 4997:4997 --network taskNotifyNetwork --name signalrnotifyapi signalrnotifyapi:v1
-/***************************************************************************************************************************
-
-docker run --name task-notify-app-postgres-database -p 5432:5432 -e POSTGRES_PASSWORD=asd123PWD -d postgres
-[optional] https://dbeaver.io/download/ (management studio for postgres)

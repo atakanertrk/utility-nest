@@ -5,7 +5,7 @@ services:
     build:
       context: ./TaskNotifyBackend/TaskAPI/TaskAPI
       dockerfile: Dockerfile
-    image: taskapi:v1
+    image: 3480/taskapi:v1
     ports:
       - "4998:4998"
     networks:
@@ -17,7 +17,7 @@ services:
     build:
       context: ./TaskNotifyBackend/CoreAPI/CoreAPI
       dockerfile: Dockerfile
-    image: coreapi:v1
+    image: 3480/coreapi:v1
     ports:
       - "4999:4999"
     networks:
@@ -29,7 +29,7 @@ services:
     build:
       context: ./TaskNotifyBackend/SignalRNotifyAPI/SignalRNotifyAPI
       dockerfile: Dockerfile
-    image: signalrnotifyapi:v1
+    image: 3480/signalrnotifyapi:v1
     ports:
       - "4997:4997"
     networks:

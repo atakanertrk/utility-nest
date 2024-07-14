@@ -1,9 +1,10 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { CommonModule, formatDate } from '@angular/common';
 import { NotificationService } from '../services/notification.service';
 import { HttpServiceService } from '../services/http-service.service';
+import { ConfigService } from '../services/config.service';
 
 @Component({
   selector: 'app-create-task-form',
@@ -14,18 +15,18 @@ import { HttpServiceService } from '../services/http-service.service';
 })
 export class CreateTaskFormComponent {
   taskName: string = '';
-  completedTasks: string[] = [];
-  createdTasks: string[] = [];
-  failedTasks: string[] = [];
+  completedTasks: any[] = [];
+  createdTasks: any[] = [];
+  failedTasks: any[] = [];
   taskProcessTimeInSeconds: number = 5;
 
-  constructor(private notificationService: NotificationService, private httpServiceService: HttpServiceService) {
+  constructor(private notificationService: NotificationService, private httpServiceService: HttpServiceService, private config:ConfigService) {
 
   }
 
   ngOnInit() {
     this.notificationService.notifyObservable.subscribe((message) => {
-      this.completedTasks.push(message);
+      this.completedTasks.push({message: message,datetime:formatDate(new Date(), 'HH:mm:ss', 'en')});
     });
   }
 
@@ -41,14 +42,14 @@ export class CreateTaskFormComponent {
       taskProcessTimeInSeconds: this.taskProcessTimeInSeconds
     };
 
-    this.httpServiceService.post('http://localhost:4998/api/tasks/createnew', payload, headers).subscribe(
+    this.httpServiceService.post(`tasks/createnew`, payload, headers).subscribe(
       response => {
         console.log(response);
-        this.createdTasks.push(this.taskName);
+        this.createdTasks.push({message: this.taskName,datetime:formatDate(new Date(), 'HH:mm:ss', 'en')});
       },
       error => {
         console.error('TaskError:', error);
-        this.failedTasks.push(this.taskName);
+        this.failedTasks.push({message: this.taskName,datetime:formatDate(new Date(), 'HH:mm:ss', 'en')});
       }
     );
   }
