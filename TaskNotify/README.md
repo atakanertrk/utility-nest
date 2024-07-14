@@ -1,64 +1,29 @@
-# Project Title
+## Spinning Up Services
+I created this project first in local environment then practiced it on remote Linux server.  
+So I will be sharing both steps.  
 
-## Contents
-* [1) On Local](#on-local)
-* [2) On Server](#on-server)
+[Local (Docker Desktop Windows WSL)](#on-local)
 
-## <a id="on-local"></a>1) On Local
-Instructions for setting up the project on a local environment.
+[Remote Server (Docker on Linux Machine via SSH terminal)](#on-server)
 
-1. Clone the repository:
-    ```sh
-    git clone https://github.com/your-username/your-repo.git
-    ```
+## <a id="on-local"></a>1) On Local (Docker Desktop Windows WSL)
+First we will spinup Kafka containers [Quick Start for Confluent Platform](https://docs.confluent.io/platform/current/platform-quickstart.html)  
+Download compose file https://github.com/confluentinc/cp-all-in-one/blob/7.6.1-post/cp-all-in-one-kraft/docker-compose.yml  
+We have updated that compose file to use our custom network, so you can get the modified version at [kafka-docker-compose.yml](https://github.com/atakanertrk/utility-nest/blob/main/TaskNotify/kafka-docker-compose.yml)
 
-2. Navigate to the project directory:
-    ```sh
-    cd your-repo
-    ```
+    docker-compose -f kafka-docker-compose.yml -p task-notify-kafka-container up
+    
+Open control panel and add two default topics.  
+`tasks-to-process`
+`tasks-processed` 
+  
+     
 
-3. Install dependencies:
-    ```sh
-    npm install
-    ```
 
-4. Start the development server:
-    ```sh
-    npm start
-    ```
-
-## <a id="on-server"></a>2) On Server
+## <a id="on-server"></a>2) On Server (Docker on Linux Machine via SSH terminal)
 Instructions for setting up the project on a server.
 
 1. SSH into your server:
     ```sh
     ssh your-user@your-server-ip
-    ```
-
-2. Clone the repository:
-    ```sh
-    git clone https://github.com/your-username/your-repo.git
-    ```
-
-3. Navigate to the project directory:
-    ```sh
-    cd your-repo
-    ```
-
-4. Install dependencies:
-    ```sh
-    npm install
-    ```
-
-5. Start the server:
-    ```sh
-    npm start
-    ```
-
-6. (Optional) Set up a process manager like PM2 to keep your server running:
-    ```sh
-    npm install pm2 -g
-    pm2 start npm -- start
-    pm2 save
-    pm2 startup
     ```
