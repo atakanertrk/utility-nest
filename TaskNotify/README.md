@@ -85,3 +85,6 @@ We will be using same yml files as we used in local environment, but removed bui
       docker-compose -f backend-api-docker-compose.yml -p task-notify-api-list up
 
       docker run -it --rm -p 4200:4200 --network taskNotifyNetwork --name task-notify-ui 3480/task-notify-ui:v1
+
+![image](https://github.com/user-attachments/assets/01c70c87-3171-49b1-84dd-9bcbbc21fd81)
+
