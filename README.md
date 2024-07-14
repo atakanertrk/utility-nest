@@ -1,7 +1,7 @@
 # utility-nest (various playground projects)
 
 # [1) TaskNotify](https://github.com/atakanertrk/utility-nest/tree/main/TaskNotify)
-> Visit [TaskNotify](https://github.com/atakanertrk/utility-nest/tree/main/TaskNotify) folder to spin-up services using Docker on your local env.
+> Visit [TaskNotify](https://github.com/atakanertrk/utility-nest/tree/main/TaskNotify) folder to spin-up services using Docker on your local env. and see how to deploy on Linux machine via SSH
 * How Does It Work ?
 ![Diagram](https://github.com/user-attachments/assets/4ae6fc5f-efe1-4b54-a50f-191f9a6015fa)
 
