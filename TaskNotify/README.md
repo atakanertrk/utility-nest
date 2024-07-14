@@ -49,7 +49,8 @@ But we can create image with following steps. (we use that image when we spin-up
 
 ![image](https://github.com/user-attachments/assets/052b2583-c89e-42fa-bdd3-a767bb777e58)
 
-## <a id="on-server"></a>2) Remote Server (Docker on Linux Machine via SSH terminal)
+## <a id="on-server"></a>2) Remote Server (Docker on Linux Machine via SSH terminal)  
+
 Changed localhost to server IP address in config files then pushed images on docker hub.  
 `localhost -> 77.245.158.95`  
 
@@ -62,6 +63,8 @@ Changed localhost to server IP address in config files then pushed images on doc
 * Now we can connect our Linux server via SSH
 
       ssh root@77.245.158.95 -p 22666
+
+* Make sure you have docker and docker compose installed. https://docs.docker.com/engine/install/ubuntu/
 
 * Create TaskNotify folder and yml files.
 
